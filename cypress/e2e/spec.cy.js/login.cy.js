@@ -1,7 +1,10 @@
 describe('Funcionalidad de Login', () => {
     it('Debería loguearse exitosamente con credenciales válidas', () => {
-    // Usamos el comando personalizado
-    cy.login('tomsmith', 'SuperSecretPassword!')
+    // Usamos cy.fixture() para cargar los datos del JSON
+    cy.fixture('user').then((user) => {
+        // Ejecutamos el Custom Command usando los datos del fixture
+        cy.login(user.username, user.password)
+    })
 
     // Validación Final: El mensaje de éxito es visible
     cy.contains('You logged into a secure area!').should('be.visible')
