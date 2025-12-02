@@ -26,16 +26,4 @@
 //
 // Comando personalizado para iniciar sesión
 //
-Cypress.Commands.add('login', (username, password) => {
-    // 1. Visitar la página de login
-    cy.visit('/login') // <--- Debe estar aquí dentro
 
-    // 2. Escribir nombre de usuario
-    cy.get('#username').type(username) 
-
-    // 3. Escribir contraseña
-    cy.get('#password').type(password)
-
-    // 4. Clic en el botón de login
-    cy.get('[type="submit"]').click()
-}) // <--- Asegúrate de que este paréntesis esté aquí
