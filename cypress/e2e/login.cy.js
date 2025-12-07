@@ -1,27 +1,30 @@
-import LoginPage from '../page_objects/LoginPage' 
+import LoginPage from '../page_objects/LoginPage';
 
-describe('Funcionalidad de Login (USANDO POM)', () => {
+describe('Funcionalidad de Login (USANDO POM con Herencia)', () => {
     
     it('Debería loguearse exitosamente con credenciales válidas', () => {
-        // AHORA SI: El log está DENTRO del it
-        const API_URL = Cypress.env('userAPI')
-        cy.log('La URL de la API para pruebas es: ' + API_URL)
+        // MODIFICADO: Usamos el método 'visit' heredado del BasePage
+        LoginPage.visit('/login'); 
 
-        // IMPORTANTE: Revisa si tu archivo en 'fixtures' se llama 'user.json' o 'credentials.json'
-        // Si se llama 'credentials.json', cambia 'user' por 'credentials' aquí abajo:
-        cy.fixture('credentials').then((user) => {
-            cy.visit('/login') 
-            
-            LoginPage.performLogin(user.username, user.password) 
-            
-            LoginPage.getFlashMessage().should('contain', 'You logged into a secure area!')
-            cy.contains('Logout').should('be.visible')
+        // Usamos cy.fixture() para cargar los datos del JSON
+        cy.fixture('credentials').then((user) => { 
+            // Ejecutamos el Custom Command usando los datos del fixture
+            cy.login(user.username, user.password)
         })
+
+        // Validación Final: El mensaje de éxito es visible
+        cy.contains('You logged into a secure area!').should('be.visible')
+        cy.contains('Logout').should('be.visible')
     })
 
     it('Debería fallar con credenciales inválidas', () => {
-        cy.visit('/login') 
-        LoginPage.performLogin('user_invalido', 'password_invalida')
-        LoginPage.getFlashMessage().should('contain', 'Your username is invalid!')
+        // MODIFICADO: Usamos el método 'visit' heredado del BasePage
+        LoginPage.visit('/login');
+
+        // Usamos el Page Object para las acciones
+        LoginPage.performLogin('usuario_malo', 'pass_malo');
+
+        // Validación (Aserción)
+        cy.contains('Your username is invalid!').should('be.visible')
     })
 })

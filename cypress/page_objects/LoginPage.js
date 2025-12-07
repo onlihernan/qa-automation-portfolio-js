@@ -1,28 +1,26 @@
-class LoginPage {
+import BasePage from './BasePage'; // <--- AÑADIDO: Importamos la clase padre
+
+// MODIFICADO: Hacemos que LoginPage herede de BasePage
+class LoginPage extends BasePage { 
     // 1. Definición de Selectores (Dónde está el elemento)
     getUserNameField() {
-        return cy.get('#username')
+        return cy.get('#username');
     }
 
     getPasswordField() {
-        return cy.get('#password')
+        return cy.get('#password');
     }
 
-    getSubmitButton() {
-        return cy.get('[type="submit"]')
+    getLoginButton() {
+        return cy.get('button[type="submit"]');
     }
 
-    getFlashMessage() {
-        return cy.get('#flash')
-    }
-
-    // 2. Definición de Acciones (Qué hacer con el elemento)
+    // 2. Definición de Acciones (Métodos)
     performLogin(username, password) {
-        this.getUserNameField().type(username)
-        this.getPasswordField().type(password)
-        this.getSubmitButton().click()
+        this.getUserNameField().type(username);
+        this.getPasswordField().type(password);
+        this.getLoginButton().click();
     }
 }
 
-// Exportamos la clase
-export default new LoginPage()
+export default new LoginPage();
